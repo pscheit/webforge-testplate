@@ -1,0 +1,19 @@
+{
+    "name": "webforge/testplate",
+    "description": "Testplate for webforge for base testcases",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philipp Scheit",
+            "email": "p.scheit@ps-webforge.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": {
+            "Webforge\\Code\\Test": ["lib/", "tests/"]
+        }
+    }}
