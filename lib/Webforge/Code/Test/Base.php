@@ -4,10 +4,12 @@ namespace Webforge\Code\Test;
 
 use Psc\Code\Code;
 use Webforge\Common\System\Dir;
+use Webforge\Common\System\File;
 use Webforge\Code\Generator\GClass;
 use Webforge\Common\ArrayUtil as A;
 use Webforge\Common\Util;
 use Webforge\Common\DeprecatedException;
+use Psc\System\Console\Process;
 
 /**
  * Changes to the PHPUnit-API:
@@ -17,7 +19,7 @@ use Webforge\Common\DeprecatedException;
  * - add assertArrayEquals() as a short coming for equals() with $canonicalize = true
  */
 class Base extends Assertions {
-  
+
   /**
    * @var Webforge\Common\System\Dir
    */

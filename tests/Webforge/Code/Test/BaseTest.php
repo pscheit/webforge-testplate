@@ -44,31 +44,4 @@ class BaseTest extends Base {
     );
     */
   }
-
-  public function testGetFileReturnsAnEXISTINGFileInstanceFromTheTestDirectory() {
-    $this->assertInstanceOf('Webforge\Common\System\File', $this->getFile('existing.txt'));
-    $this->assertInstanceOf('Webforge\Common\System\File', $this->getFile('images/1.jpg'));
-  }
-
-  public function testOtherParamsFromGetFileAreDeprecated() {
-    $this->setExpectedException('Webforge\Common\DeprecatedException');
-
-    $this->getFile('1.jpg', 'images/');
-  }
-
-  public function testLastParamFromGetFileIsDeprecated() {
-    $this->setExpectedException('Webforge\Common\DeprecatedException');
-
-    $this->getFile('1.jpg', 'images/', 'common');
-  }
-
-  public function testIsAssertingExistance() {
-    $this->setExpectedException('PHPUnit_Framework_ExpectationFailedException');
-
-    $this->getFile('non-existing');
-  }
-
-  public function testRunPHPFileDoesExist() {
-    $this->assertTrue(method_exists($this, 'runPHPFile'));
-  }
 }

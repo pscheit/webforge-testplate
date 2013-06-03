@@ -11,6 +11,13 @@ use Psc\PHPUnit\InvokedAtMethodGroupIndexMatcher;
 
 class Assertions extends \PHPUnit_Framework_TestCase {
 
+  /**
+   * @var string
+   * @see assertChainable()
+   */
+  protected $chainClass;
+  
+
   /* CUSTOM ASSERTIONS */
   /**
    * So wie assertEquals jedoch werden die arrays canonicalized (normalisiert, bzw sortiert)
