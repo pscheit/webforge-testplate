@@ -67,4 +67,8 @@ class BaseTest extends Base {
 
     $this->getFile('non-existing');
   }
+
+  public function testRunPHPFileDoesExist() {
+    $this->assertTrue(method_exists($this, 'runPHPFile'));
+  }
 }

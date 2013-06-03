@@ -232,24 +232,4 @@ class PscBase extends AssertionsBase {
 //  }
 
   
-  /**
-   * @return Psc\System\Console\Process
-   */
-  public function runPHPFile(File $phpFile) {
-    $phpBin = SystemUtil::findPHPBinary();
-    
-    $process = Process::build($phpBin, array(), array('f'=>$phpFile))->end();
-    $process->run();
-    
-    $this->assertTrue($process->isSuccessful(),
-                      sprintf("process for phpfile '%s' did not return 0.\ncmd:\n%s\nerr:\n%s\nout:\n%s\n",
-                        $phpFile,
-                        $process->getCommandLine(),
-                        $process->getErrorOutput(),
-                        $process->getOutput()
-                      )
-                     );
-    
-    return $process;
-  }
 }
