@@ -16,4 +16,10 @@
         "psr-0": {
             "Webforge\\Code\\Test": ["lib/", "tests/"]
         }
-    }}
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2.x-dev"
+        }
+    }
+}
