@@ -5,6 +5,9 @@ namespace Webforge\Code\Test;
 use Psc\Code\Code;
 use Webforge\Common\System\Dir;
 use Webforge\Code\Generator\GClass;
+use Webforge\Common\ArrayUtil as A;
+use Webforge\Common\Util;
+use Webforge\Common\DeprecatedException;
 
 /**
  * Changes to the PHPUnit-API:
@@ -62,13 +65,6 @@ class Base extends Assertions {
     return $this->testFilesDirectory->sub($sub);
   }
   
-  /**
-   * @return Webforge\Common\System\Dir
-   */
-  public function getTempDirectory($sub) {
-    return $this->getTestDirectory('tmp/')->sub($sub);
-  }
-  
   /* PHPUnit extensions */
   
   public static function assertFileExists($filename, $message = '') {
@@ -93,8 +89,52 @@ class Base extends Assertions {
     return parent::getMockForAbstractClass($originalClassName, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
   }
   
+  /**
+   * Returns only the with $getter retrieved fields from an array of objects
+   *
+   * @return array
+   */
   public function pluck($collection, $getter) {
-    return $this->reduceCollection($collection, $getter);
+    return A::pluck($collection, $getter);
+  }
+
+  /**
+   * Returns only the with $getter retrieved fields from an array of objects
+   *
+   * @return array
+   */
+  public function reduceCollection($collection, $getter = 'identifier') {
+    return $this->pluck(Util::castArray($collection), $getter);
+  }
+
+  // FILE UTILS
+
+  /**
+   * @return Webforge\Common\System\Dir
+   */
+  public function getTempDirectory($sub) {
+    return $this->getTestDirectory('tmp/')->sub($sub);
+  }
+
+  /**
+   * Returns an existing File
+   * 
+   * the file is asserted for existance
+   * 
+   * $this->getFile('images/1.jpg');
+   * 
+   * @param string $relativePath relative to %packageDir%/tests/files/
+   * @return Webforge\Common\System\File
+   */
+  public function getFile($relativePath) {
+    if (func_num_args() >= 2) {
+      throw DeprecatedException::fromMethodParam(__FUNCTION__, 2, 'params 2 and 3 are deprecated. use the full relative path (its always searched in tests/files/)');
+    }
+
+    $file = $this->getTestDirectory()->getFile($relativePath);
+
+    $this->assertFileExists($file, sprintf("getFile('%s') from TestCase cannot find file.", $relativePath));
+    
+    return $file;
   }
 }
-?>

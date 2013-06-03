@@ -12,3 +12,11 @@ to run the tests use:
 ```
 phpunit
 ```
+
+## configuration
+
+if you want to use the `getFile()` or other file helpers you need to 
+```php
+$bootLoader->registerPackageRoot();
+```
+in your bootstrap.php. If you use `registerCMSContainer` this is already done.
