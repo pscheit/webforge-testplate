@@ -8,6 +8,7 @@ use Webforge\Common\System\File;
 use Webforge\Code\Generator\GClass;
 use Webforge\Common\ArrayUtil as A;
 use Webforge\Common\Util;
+use Webforge\Common\System\Util as SystemUtil;
 use Webforge\Common\DeprecatedException;
 use Psc\System\Console\Process;
 
