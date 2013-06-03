@@ -1,6 +1,6 @@
 <?php
 
-namespace Psc\Code\Test;
+namespace Webforge\Code\Test;
 
 use Psc\PSC;
 use Webforge\Common\System\Dir;
@@ -8,13 +8,14 @@ use Webforge\Common\System\File;
 use Webforge\Common\System\Util as SystemUtil;
 use Closure;
 use Psc\System\Console\Process;
+use Psc\Code\Test\FrontendCodeTester;
+use Psc\Code\Test\DoublesManager;
 
 /**
- * Der Base-TestCase
+ * OldStyle Psc Base Test
  *
- * Custom Assertions für Base siehe in AssertionsBase
  */
-class Base extends AssertionsBase {
+class PscBase extends AssertionsBase {
   
   /**
    * @var string
@@ -32,7 +33,10 @@ class Base extends AssertionsBase {
    */
   protected $project;
   
+  protected $resourceHelper;
   
+  protected $doublesManager;
+
   public function __construct($name = NULL, array $data = array(), $dataName = '') {
     parent::__construct($name, $data, $dataName);
     
@@ -68,11 +72,6 @@ class Base extends AssertionsBase {
 
   public function initAcceptanceTester($tester) {
   }
-
-  /* copy n paste zu DatabaseTest */
-  protected $resourceHelper;
-  
-  protected $doublesManager;
 
   /**
    * @return Psc\Code\Test\ResourceHelper
@@ -254,4 +253,3 @@ class Base extends AssertionsBase {
     return $process;
   }
 }
-?>
