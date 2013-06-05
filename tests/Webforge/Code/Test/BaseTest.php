@@ -44,4 +44,14 @@ class BaseTest extends Base {
     );
     */
   }
+
+  public function testGetMockForAbstractClassDoesExpandWithNamespace() {
+    $mock = $this->getMockForAbstractClass('AnAbstractClass');
+
+    $this->assertInstanceOf(__NAMESPACE__.'\\AnAbstractClass', $mock);
+  }
+}
+
+abstract class AnAbstractClass {
+
 }

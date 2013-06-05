@@ -22,5 +22,8 @@
         "branch-alias": {
             "dev-master": "1.2.x-dev"
         }
+    },
+    "require-dev": {
+        "webforge/testplate": "1.2.*@dev"
     }
 }
