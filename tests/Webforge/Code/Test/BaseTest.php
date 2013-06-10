@@ -50,6 +50,10 @@ class BaseTest extends Base {
 
     $this->assertInstanceOf(__NAMESPACE__.'\\AnAbstractClass', $mock);
   }
+
+  public function testBuildTranslationsReturnsATranslationsBuilder() {
+    $this->assertInstanceOf('Webforge\Translation\TranslationsBuilder', $this->buildTranslations($domain = NULL));
+  }
 }
 
 abstract class AnAbstractClass {

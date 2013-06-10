@@ -13,6 +13,8 @@ use Webforge\Common\ClassUtil;
 use Webforge\Common\DeprecatedException;
 use Psc\System\Console\Process;
 
+use Webforge\Translation\TranslationsBuilder;
+
 /**
  * Changes to the PHPUnit-API:
  *
@@ -163,5 +165,14 @@ class Base extends Assertions {
                      );
     
     return $process;
+  }
+
+  // TRANSLATION UTILS
+
+  /**
+   * @return Webforge\Translation\TranslationsBuilder
+   */
+  public function buildTranslations($domain = NULL) {
+    return TranslationsBuilder::create($domain);
   }
 }
