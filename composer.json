@@ -12,6 +12,9 @@
     "require": {
         "webforge/common": "1.1.*@dev"
     },
+    "require-dev": {
+        "webforge/translation": "1.1.*@dev"
+    },
     "autoload": {
         "psr-0": {
             "Webforge\\Code\\Test": ["lib/", "tests/"],
@@ -22,8 +25,5 @@
         "branch-alias": {
             "dev-master": "1.2.x-dev"
         }
-    },
-    "require-dev": {
-        "webforge/translation": "1.1.*@dev"
     }
 }
