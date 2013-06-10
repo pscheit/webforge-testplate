@@ -15,8 +15,7 @@
     "autoload": {
         "psr-0": {
             "Webforge\\Code\\Test": ["lib/", "tests/"],
-            "Webforge\\Common": ["D:\\www\\webforge-common\\lib"],
-            "Webforge\\Translation": ["D:\\www\\webforge-translation\\lib"]
+            "Webforge\\Common": ["D:\\www\\webforge-common\\lib"]
         }
     },
     "extra": {
@@ -25,6 +24,6 @@
         }
     },
     "require-dev": {
-        "webforge/testplate": "1.2.*@dev"
+        "webforge/translation": "1.1.*@dev"
     }
 }
