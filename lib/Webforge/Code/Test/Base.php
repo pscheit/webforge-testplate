@@ -175,4 +175,8 @@ class Base extends Assertions {
   public function buildTranslations($domain = NULL) {
     return TranslationsBuilder::create($domain);
   }
+
+  public function assertNotTranslationKey($actual, $msg = '') {
+    $this->assertNotRegExp('/^[-a-zA-Z0-9_]+(\.[-a-zA-Z0-9_])*$/', $actual, $actual.' looks like an translation key.'.($msg ? "\n".$msg : ''));
+  }
 }

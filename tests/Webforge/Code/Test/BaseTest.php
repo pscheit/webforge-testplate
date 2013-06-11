@@ -3,6 +3,7 @@
 namespace Webforge\Code\Test;
 
 use Webforge\Common\ArrayUtil as A;
+use Webforge\Translation\Translator;
 
 class BaseTest extends Base {
 
@@ -53,6 +54,31 @@ class BaseTest extends Base {
 
   public function testBuildTranslationsReturnsATranslationsBuilder() {
     $this->assertInstanceOf('Webforge\Translation\TranslationsBuilder', $this->buildTranslations($domain = NULL));
+  }
+
+  /**
+   * @dataProvider provideTranslationKeyTests
+   */
+  public function testAssertionsForNotTranslationKey($key, $isTranslationKey) {
+    if (!$isTranslationKey) {
+      $this->setExpectedException('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    $this->assertNotTranslationKey($key);
+  }
+
+  public static function provideTranslationKeyTests() {
+    $tests = array();
+  
+    $test = function() use (&$tests) {
+      $tests[] = func_get_args();
+    };
+  
+    $test('sidebar.website', TRUE);
+    $test('sidebar', FALSE);
+    $test('components.news.published', TRUE);
+  
+    return $tests;
   }
 }
 
