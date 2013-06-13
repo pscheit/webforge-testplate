@@ -144,6 +144,24 @@ class Base extends Assertions {
     return $file;
   }
 
+  // Framework UTILS
+  /**
+   * @return the local package
+   */
+  public function getPackage() {
+    // this is only defined if bootstrap container is avaible and webforge is avaible
+    return $GLOBALS['env']['container']->webforge->getLocalPackage();
+  }
+
+  /**
+   * @return Webforge\Common\System\Dir
+   */
+  public function getPackageDir($sub) {
+    return $GLOBALS['env']['root']->sub($sub);
+    //return $this->getPackage()->getRootDirectory()->sub($sub);
+  }
+
+
   // SYSTEM UTILS
 
   /**
