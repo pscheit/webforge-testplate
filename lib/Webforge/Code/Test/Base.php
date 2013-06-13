@@ -85,13 +85,18 @@ class Base extends Assertions {
   }
   
   public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE) {
-    $originalClassName = ClassUtil::expandNamespace($originalClassName, ClassUtil::getNamespace(get_class($this)));
+    if (!class_exists($originalClassName)) {
+      $originalClassName = ClassUtil::expandNamespace($originalClassName, ClassUtil::getNamespace(get_class($this)));
+    }
     
     return parent::getMock($originalClassName, $methods, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $cloneArguments);
   }
 
   public function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array(), $cloneArguments = TRUE) {
-    $originalClassName = ClassUtil::expandNamespace($originalClassName, ClassUtil::getNamespace(get_class($this)));
+    if (!class_exists($originalClassName)) {
+      $originalClassName = ClassUtil::expandNamespace($originalClassName, ClassUtil::getNamespace(get_class($this)));
+    }
+    
     return parent::getMockForAbstractClass($originalClassName, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
   }
   

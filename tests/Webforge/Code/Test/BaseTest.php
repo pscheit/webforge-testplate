@@ -52,6 +52,11 @@ class BaseTest extends Base {
     $this->assertInstanceOf(__NAMESPACE__.'\\AnAbstractClass', $mock);
   }
 
+  public function testGetMockDoesNotExpandWhenExistingClassIsUsed() {
+    $mock = $this->getMock('stdClass');
+    $this->assertInstanceof('stdClass', $mock);
+  }
+
   public function testBuildTranslationsReturnsATranslationsBuilder() {
     $this->assertInstanceOf('Webforge\Translation\TranslationsBuilder', $this->buildTranslations($domain = NULL));
   }
