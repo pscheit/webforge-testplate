@@ -13,7 +13,11 @@
         "webforge/common": "1.1.*@dev"
     },
     "require-dev": {
-        "webforge/translation": "1.1.*@dev"
+        "webforge/translation": "1.1.*@dev",
+        "guzzle/guzzle": "3.5.*"
+    },
+    "suggest": {
+        "guzzle/guzzle": "Needed for the GuzzleTester"
     },
     "autoload": {
         "psr-0": {
