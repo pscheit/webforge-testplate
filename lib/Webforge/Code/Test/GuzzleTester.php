@@ -40,11 +40,12 @@ class GuzzleTester {
     if (!isset($this->client)) {
       $this->client = new \Guzzle\Http\Client($this->baseUrl);
 
-      $this->client->getEventDispatcher()->addListener('client.create_request', function (\Guzzle\Common\Event $e) {
+      $defaultAuth = $this->defaultAuth;
+      $this->client->getEventDispatcher()->addListener('client.create_request', function (\Guzzle\Common\Event $e) use ($defaultAuth) {
         $request = $e['request'];
 
-        if (isset($this->defaultAuth)) {
-          list($user, $pw) = $this->defaultAuth;
+        if (isset($defaultAuth)) {
+          list($user, $pw) = $defaultAuth;
 
           $request->setAuth($user, $pw);
         }
