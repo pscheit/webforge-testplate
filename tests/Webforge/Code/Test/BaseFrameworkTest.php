@@ -3,6 +3,7 @@
 namespace Webforge\Code\Test;
 
 use Webforge\Common\ArrayUtil as A;
+use Webforge\Framework\Container;
 
 class BaseFrameworkTest extends Base {
 
@@ -11,9 +12,12 @@ class BaseFrameworkTest extends Base {
     parent::setUp();
   }
 
-
   public function testGetPackageReturnsTheLocalWebforgePackage() {
-    $this->markTestSkipped('how should i test this without pulling whole webforge in?');
+    $GLOBALS['env']['container'] = (object) array('webforge'=>$mock = $this->getMock('Webforge\Framework\Container'));
+
+    $mock->expects($this->once())->method('getLocalPackage');
+
+    $this->getPackage();
   }
 
   public function testGetPackageDirIsAFakeAndReturnsTheGlobalsEnvRootDir() {
