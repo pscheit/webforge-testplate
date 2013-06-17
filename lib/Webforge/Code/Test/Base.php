@@ -25,9 +25,19 @@ use Webforge\Translation\TranslationsBuilder;
 class Base extends Assertions {
 
   /**
+   * @var Webforge\Code\Test\FrameworkHelper
+   */
+  protected $frameworkHelper;
+
+  /**
    * @var Webforge\Common\System\Dir
    */
   protected $testFilesDirectory;
+
+  public function setUp() {
+    $this->frameworkHelper = new FrameworkHelper;
+    parent::setUp();
+  }
     
   /**
    * Asserts that actualCode is equivalent to expectedCode (as PHP Code)

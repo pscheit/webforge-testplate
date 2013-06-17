@@ -22,4 +22,10 @@ class BaseFrameworkTest extends Base {
       $this->getPackageDir('something/')
     );
   }
+
+  public function testFrameworkHelperCanCreateAEnvironmentContainer() {
+    $this->assertInstanceOf('Webforge\Code\Test\FrameworkHelper', $this->frameworkHelper);
+
+    $this->assertInstanceOf('Webforge\CMS\EnvironmentContainer', $this->frameworkHelper->createEnvironmentContainer());
+  }
 }
