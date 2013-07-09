@@ -114,7 +114,8 @@ class GuzzleTester {
    */
   public function dispatch($request = NULL) {
     try {
-      return $this->getClient()->send($request ?: $this->request);
+
+      return $this->response = $this->getClient()->send($this->request = $request ?: $this->request);
     } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
       return $this->handleServerError($e);
     }
@@ -137,14 +138,14 @@ class GuzzleTester {
 
 
   public function dispatchJSON($request = NULL) {
-    $this->response = $this->dispatch($request);
+    $response = $this->dispatch($request);
 
     try {
-      $raw = $this->response->getBody($asString = TRUE);
+      $raw = $response->getBody($asString = TRUE);
 
       return $this->jsonParser->parse($raw);
     } catch (JSONParsingException $e) {
-      throw new \RuntimeException(sprintf('JSON Parse Fehler. Mit Response: %s', $this->response), 0, $e);
+      throw new \RuntimeException(sprintf('JSON Parse Fehler. Mit Response: %s', $response), 0, $e);
     }
   }
 
