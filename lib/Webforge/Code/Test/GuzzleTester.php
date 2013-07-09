@@ -14,6 +14,7 @@ $this->guzzle->setDefaultAuth($hostConfig->req('cmf.user'),$hostConfig->req('cmf
 
 use Webforge\Common\JS\JSONConverter;
 use Webforge\Common\JS\JSONParsingException;
+use RuntimeException;
 
 class GuzzleTester {
 
@@ -114,7 +115,6 @@ class GuzzleTester {
    */
   public function dispatch($request = NULL) {
     try {
-
       return $this->response = $this->getClient()->send($this->request = $request ?: $this->request);
     } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
       return $this->handleServerError($e);
@@ -122,20 +122,21 @@ class GuzzleTester {
   }
 
   public function handleServerError(\Guzzle\Http\Exception\ServerErrorResponseException $e) {
-    $response = $e->getResponse();
+    $this->response = $e->getResponse();
 
     if (
-      $response->getStatusCode() >= 400 && 
-      $response->getHeader('X-Psc-Cms-Error') == 'true' && 
-      ($msg = $response->getHeader('X-Psc-Cms-Error-Message')) != NULL
+      $this->response->getStatusCode() >= 400 && 
+      $this->response->getHeader('X-Psc-Cms-Error') == 'true' && 
+      ($msg = $this->response->getHeader('X-Psc-Cms-Error-Message')) != NULL
     ) {
+      
       $msg = "\n".'Fehler auf der Seite: '.$msg;
-      throw new \RuntimeException($msg, 0, $e);
+      throw new RuntimeException($msg, 0, $e);
+
     } else {
       throw $e;
     }
   }
-
 
   public function dispatchJSON($request = NULL) {
     $response = $this->dispatch($request);
@@ -145,7 +146,7 @@ class GuzzleTester {
 
       return $this->jsonParser->parse($raw);
     } catch (JSONParsingException $e) {
-      throw new \RuntimeException(sprintf('JSON Parse Fehler. Mit Response: %s', $response), 0, $e);
+      throw new RuntimeException(sprintf('JSON Parse Fehler. Mit Response: %s', $response), 0, $e);
     }
   }
 
@@ -155,14 +156,16 @@ class GuzzleTester {
   }
 
   public function debug() {
-    if (isset($this->repsonse)) {
-      print '------------ Acceptance - Guzzle (Fail) ------------'."\n";
+    print '------------ Guzzle-Tester ------------'."\n";
+    if (isset($this->response)) {
       print '--------- Request ---------'."\n";
       print $this->request."\n";
       print '--------- Response ---------'."\n";
       print $this->response;
       print "\n";
       print '------------ / Guzzle ------------'."\n";
+    } else {
+      print " (no debug info)"."\n";
     }
   }
 }
