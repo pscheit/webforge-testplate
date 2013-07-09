@@ -5,6 +5,8 @@ namespace Webforge\Code\Test;
 /* 
 in Psc:
 
+use Webforge\Code\Test\GuzzleTester;
+
 $this->guzzle = new GuzzleTester($this->getProject()->getBaseUrl());
 $hostConfig = $this->getProject()->getHostConfig();
 $this->guzzle->setDefaultAuth($hostConfig->req('cmf.user'),$hostConfig->req('cmf.password'));
