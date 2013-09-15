@@ -18,7 +18,8 @@
         "guzzle/guzzle": "3.5.*"
     },
     "suggest": {
-        "guzzle/guzzle": "Needed for the GuzzleTester"
+        "guzzle/guzzle": "Needed for the GuzzleTester",
+        "mockery/mockery": "Better replacement for PHPUnits mock library"
     },
     "autoload": {
         "psr-0": {
