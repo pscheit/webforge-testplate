@@ -2,20 +2,21 @@
 
 namespace Webforge\Code\Test;
 
-/* 
-in Psc:
-
-use Webforge\Code\Test\GuzzleTester;
-
-$this->guzzle = new GuzzleTester($this->getProject()->getBaseUrl());
-$hostConfig = $this->getProject()->getHostConfig();
-$this->guzzle->setDefaultAuth($hostConfig->req('cmf.user'),$hostConfig->req('cmf.password'));
-*/
-
 use Webforge\Common\JS\JSONConverter;
 use Webforge\Common\JS\JSONParsingException;
 use RuntimeException;
 
+/**
+ * Tests an CMS Service with real requests to some api url
+ * 
+ * in Psc Testcases:
+ *   
+ * use Webforge\Code\Test\GuzzleTester;
+ * 
+ * $this->guzzle = new GuzzleTester($this->getProject()->getBaseUrl());
+ * $hostConfig = $this->getProject()->getHostConfig();
+ * $this->guzzle->setDefaultAuth($hostConfig->req('cmf.user'),$hostConfig->req('cmf.password'));
+ */
 class GuzzleTester {
 
   protected $response;
