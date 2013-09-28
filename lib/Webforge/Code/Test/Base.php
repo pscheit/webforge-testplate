@@ -25,6 +25,11 @@ use Webforge\Translation\TranslationsBuilder;
 class Base extends Assertions {
 
   /**
+   * Attribute for HTMLTesting Interface
+   */
+  protected $html;
+
+  /**
    * @var Webforge\Code\Test\FrameworkHelper
    */
   protected $frameworkHelper;
@@ -211,5 +216,24 @@ class Base extends Assertions {
 
   public function assertNotTranslationKey($actual, $msg = '') {
     $this->assertNotRegExp('/^[-a-zA-Z0-9_]+(\.[-a-zA-Z0-9_])*$/', $actual, $actual.' looks like an translation key.'.($msg ? "\n".$msg : ''));
+  }
+
+  // CSS Utils
+
+  public function css($selector, $html = NULL) {
+    $css = new CSSTester($this, $selector, $html);
+    $css->asContext();
+    return $css;
+  }
+
+  // HTMLTesting Interface
+
+  public function setHTML($html) {
+    $this->html = $html;
+    return $this;
+  }
+
+  public function getHTML() {
+    return $this->html;
   }
 }
