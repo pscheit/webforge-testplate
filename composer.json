@@ -19,7 +19,8 @@
     },
     "suggest": {
         "guzzle/guzzle": "Needed for the GuzzleTester",
-        "mockery/mockery": "Better replacement for PHPUnits mock library"
+        "mockery/mockery": "Better replacement for PHPUnits mock library",
+        "webforge/dom": "If you want to use the css() tests in your unit tests for html"
     },
     "autoload": {
         "psr-0": {

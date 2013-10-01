@@ -2,15 +2,15 @@
 
 namespace Webforge\Code\Test;
 
-use Psc\JS\jQuery;
-use Psc\XML\Helper as xml;
+use Webforge\DOM\Query;
+use Webforge\DOM\XMLUtil as xml;
 use PHPUnit_Framework_TestCase as TestCase;
 
 class CSSTester {
   
   protected $testCase;
   
-  protected $jQuery;
+  protected $query;
   
   protected $selector;
   protected $html;
@@ -20,18 +20,18 @@ class CSSTester {
   protected $msgs;
 
   public function __construct(TestCase $testCase, $selector, $html = NULL) {
-    if (!class_exists('Psc\JS\jQuery', TRUE)) {
-      throw new \RuntimeException('Psc\JS\jQuery needs to be installed. Run composer to install.');
+    if (!class_exists('Webforge\DOM\Query', TRUE)) {
+      throw new \RuntimeException('webforge/dom needs to be installed. Run composer to install.');
     }
 
     $this->testCase = $testCase;
-    if ($selector instanceof jQuery) {
-      $this->jQuery = $selector;
+    if ($selector instanceof Query) {
+      $this->query = $selector;
     } elseif ($html === NULL && $this->testCase instanceof HTMLTesting) { // weil ich depp immer $this->html als 2ten parameter vergesse :)
       $this->html = $testCase->getHTML();
       $this->selector = $selector;
-    } elseif ($html instanceof jQuery) {
-      $this->jQuery = $html->find($selector);
+    } elseif ($html instanceof Query) {
+      $this->query = $html->find($selector);
       $this->html = NULL;
     } else {
       $this->selector = $selector;
@@ -51,10 +51,11 @@ class CSSTester {
    */
   public function count($expected, $message = NULL) {
     $this->testCase->assertInternalType('int', $expected, 'Erster Parameter von Count muss int sein');
-    $this->testCase->assertCount($expected,
-                                 $this->getJQuery(),
-                                 sprintf("Selector: '%s'%s",
-                                         $this->getSelector(), $message ? ': '.$message : ''));
+    $this->testCase->assertCount(
+      $expected,
+      $this->getQuery(),
+      sprintf("Selector: '%s'%s", $this->getSelector(), $message ? ': '.$message : '')
+    );
     return $this;
   }
 
@@ -65,54 +66,54 @@ class CSSTester {
    */
   public function atLeast($expected, $message = '') {
     $this->testCase->assertInternalType('int',$expected, 'Erster Parameter von atLeast muss int sein');
-    $this->testCase->assertGreaterThanOrEqual($expected, count($this->getJQuery()), $message ?: sprintf("Selector: '%s'",$this->getSelector()));
+    $this->testCase->assertGreaterThanOrEqual($expected, count($this->getQuery()), $message ?: sprintf("Selector: '%s'",$this->getSelector()));
     return $this;
   }
   
   public function hasAttribute($expectedAttribute, $expectedValue = NULL) {
-    $jQuery = $this->assertJQuery(__FUNCTION__);
+    $query = $this->assertquery(__FUNCTION__);
 
-    $this->testCase->assertTrue($jQuery->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: "'.$expectedAttribute.'" nicht. Context: '.\Webforge\Common\String::cut($jQuery->html(), 100,'...'));
+    $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: "'.$expectedAttribute.'" nicht. Context: '.\Webforge\Common\String::cut($query->html(), 100,'...'));
     
     if (func_num_args() >= 2) {
-      $this->testCase->assertEquals($expectedValue, $jQuery->attr($expectedAttribute), 'Wert des Attributes '.$expectedAttribute.' ist nicht identisch');
+      $this->testCase->assertEquals($expectedValue, $query->attr($expectedAttribute), 'Wert des Attributes '.$expectedAttribute.' ist nicht identisch');
     }
     return $this;
   }
   
   public function attribute($expectedAttribute, $constraint, $msg = '') {
-    $jQuery = $this->assertJQuery(__FUNCTION__);
+    $query = $this->assertquery(__FUNCTION__);
 
-    $this->testCase->assertTrue($jQuery->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' nicht. Context: '.$jQuery->html());
+    $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' nicht. Context: '.$query->html());
     
-    $this->testCase->assertThat($jQuery->attr($expectedAttribute), $constraint, $msg);
+    $this->testCase->assertThat($query->attr($expectedAttribute), $constraint, $msg);
     return $this;
   }
 
   public function hasNotAttribute($expectedAttribute) {
-    $jQuery = $this->assertJQuery(__FUNCTION__);
+    $query = $this->assertquery(__FUNCTION__);
 
-    $this->testCase->assertFalse($jQuery->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' es wurde aber erwartet, dass es nicht vorhanden sein soll');
+    $this->testCase->assertFalse($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' es wurde aber erwartet, dass es nicht vorhanden sein soll');
     return $this;
   }
   
   public function hasClass($expectedClass, $msg = '') {
     $this->testCase->assertTrue(
-      $this->getJQuery()->hasClass($expectedClass), 
+      $this->getQuery()->hasClass($expectedClass), 
       sprintf($this->msgs[__FUNCTION__], $this->getSelector(), $expectedClass, $msg)
     );
     return $this;
   }
 
   public function hasNotClass($expectedClass) {
-    $this->testCase->assertFalse($this->getJQuery()->hasClass($expectedClass), 'Element hat die Klasse: '.$expectedClass.' obwohl es sie nicht haben soll');
+    $this->testCase->assertFalse($this->getQuery()->hasClass($expectedClass), 'Element hat die Klasse: '.$expectedClass.' obwohl es sie nicht haben soll');
     return $this;
   }
 
   public function hasText($expectedText, $msg = NULL) {
     $this->testCase->assertEquals(
       $expectedText, 
-      $this->getJQuery()->text(), 
+      $this->getQuery()->text(), 
       sprintf("%sThe text contents of element (%s) do not match.",
         $msg ? $msg.".\n" : '',
         $this->getSelector()
@@ -123,16 +124,16 @@ class CSSTester {
   }
 
   public function text($constraint, $msg = NULL) {
-    $jQuery = $this->assertJQuery(__FUNCTION__);
+    $query = $this->assertquery(__FUNCTION__);
     
-    $this->testCase->assertThat($jQuery->text(), $constraint, $msg ?: sprintf('Text of Element %s matches not constraint', $this->getSelector()));
+    $this->testCase->assertThat($query->text(), $constraint, $msg ?: sprintf('Text of Element %s matches not constraint', $this->getSelector()));
     return $this;
   }
   
   public function containsText($expectedTextPart, $msg = NULL) {
     $this->testCase->assertContains(
       $expectedTextPart, 
-      $this->getJQuery()->text(), 
+      $this->getQuery()->text(), 
       sprintf("%sThe text contents of element %s do not match.", 
         $msg ? $msg.".\n" : '',
         $this->getSelector()
@@ -142,13 +143,13 @@ class CSSTester {
   }
 
   public function hasStyle($expectedStyle, $expectedValue = NULL) {
-    $jQuery = $this->assertJQuery(__FUNCTION__);
+    $query = $this->assertquery(__FUNCTION__);
     
-    $this->testCase->assertTrue($jQuery->getElement()->hasAttribute('style'), 'Element hat das Attribut: style nicht: '.$jQuery->html());
-    $this->testCase->assertContains($expectedStyle, $jQuery->attr('style'));    
+    $this->testCase->assertTrue($query->getElement()->hasAttribute('style'), 'Element hat das Attribut: style nicht: '.$query->html());
+    $this->testCase->assertContains($expectedStyle, $query->attr('style'));    
     
     if (func_num_args() >= 2) {
-      $this->testCase->assertContains($expectedStyle.': '.$expectedValue, $jQuery->attr('style'), 'Style '.$expectedStyle.' mit Wert '.$expectedValue.' nicht gefunden');
+      $this->testCase->assertContains($expectedStyle.': '.$expectedValue, $query->attr('style'), 'Style '.$expectedStyle.' mit Wert '.$expectedValue.' nicht gefunden');
     }
     return $this;
   }
@@ -158,7 +159,7 @@ class CSSTester {
    * 
    */
   public function exists($message = '') {
-    $this->testCase->assertGreaterThan(0,count($this->getJQuery()));
+    $this->testCase->assertGreaterThan(0,count($this->getQuery()));
     return $this;
   }
   
@@ -166,8 +167,8 @@ class CSSTester {
    * Startet einen neuen (Sub)Test mit find($selector)
    */
   public function css($selector) {
-    $this->assertjQuery(sprintf("css('%s')", $selector));
-    $subTest = new static($this->testCase, $this->getJQuery()->find($selector));
+    $this->assertquery(sprintf("css('%s')", $selector));
+    $subTest = new static($this->testCase, $this->getQuery()->find($selector));
     $subTest->setParent($this);
 
     return $subTest;
@@ -185,14 +186,14 @@ class CSSTester {
     return $this;
   }
   
-  protected function assertjQuery($function) {
-    $jQuery = $this->getJQuery();
-    $this->testCase->assertNotEmpty($jQuery->getElement(), 'Element kann für '.$function.' nicht überprüft werden, da der Selector 0 zurückgibt: '.$jQuery->getSelector());
-    return $jQuery;
+  protected function assertquery($function) {
+    $query = $this->getQuery();
+    $this->testCase->assertNotEmpty($query->getElement(), 'Element kann für '.$function.' nicht überprüft werden, da der Selector 0 zurückgibt: '.$query->getSelector());
+    return $query;
   }
   
-  public function getJQuery() {
-    if (!isset($this->jQuery)) {
+  public function getQuery() {
+    if (!isset($this->query)) {
       $this->testCase->assertNotNull($this->html, $this->msgs['no-html']);
       
       $html = (string) $this->html;
@@ -201,18 +202,22 @@ class CSSTester {
         $html = xml::doc($html);
       }
       
-      $this->jQuery = new jQuery($this->selector, $html);
+      $this->query = new Query($this->getSelector(), $html);
     }
     
-    return $this->jQuery;
+    return $this->query;
+  }
+
+  public function getjQuery() {
+    return $this->getQuery();
   }
   
   public function html() {
-    return $this->getJQuery()->html();
+    return $this->getQuery()->html();
   }
   
   public function getSelector() {
-    return $this->selector ?: $this->getJQuery()->getLiteralSelector();
+    return $this->selector ?: $this->getQuery()->getLiteralSelector();
   }
   
   public function end() {
@@ -221,7 +226,7 @@ class CSSTester {
   
   /**
    * @param $selector 'table tr:eq(0) td' z. B: 
-   * @param Closure $do erster Parameter die jquery td/th
+   * @param Closure $do erster Parameter die query td/th
    */
   public function readRow($selector, $expectColumnsNum, Closure $do = NULL) {
     if (!isset($do)) {
@@ -230,10 +235,10 @@ class CSSTester {
       };
     }
     
-    $tds = $this->getJQuery()->find($selector);
+    $tds = $this->getQuery()->find($selector);
     $columns = array();
     foreach ($tds as $td) {
-      $td = new jQuery($td);
+      $td = new Query($td);
       
       $columns[] = $do($td);
     }
