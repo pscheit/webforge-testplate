@@ -35,4 +35,24 @@ HTML;
     
     $this->css('section.team')->count(1);
   }
+
+  public function testexamples() {
+$this->html = <<<'HTML'
+<div class="team">
+  <h1 class="active">team</h1>
+    <div class="mitarbeiter">
+      imme
+    </div>
+    <div class="mitarbeiter">
+      philipp
+    </div>
+</div>
+HTML;
+
+$this->css('div.team')->count(1)
+  ->css('h1')->count(1)->hasClass('active')->end()
+   ->css('div.mitarbeiter')->count(2)->end()
+ ;
+
+  }
 }
