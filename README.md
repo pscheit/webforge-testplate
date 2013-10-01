@@ -45,3 +45,7 @@ $this->css('div.team')->count(1)
 ```
 
 [See here for a more detailed documentation](http://wiki.ps-webforge.com/psc-cms:dokumentation:css-tester)
+
+## usage (guzzle)
+
+[See here for testing with guzzle](docs/guzzle-mocker.md)
