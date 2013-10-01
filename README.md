@@ -43,3 +43,5 @@ $this->css('div.team')->count(1)
    ->css('div.mitarbeiter')->count(2)->end()
  ;
 ```
+
+[See here for a more detailed documentation](http://wiki.ps-webforge.com/psc-cms:dokumentation:css-tester)
