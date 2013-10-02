@@ -86,7 +86,7 @@ class CSSTester {
 
     $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' nicht. Context: '.$query->html());
     
-    $this->testCase->assertThat($query->attr($expectedAttribute), $constraint, $msg);
+    $this->testCase->assertThat($query->attr($expectedAttribute), $constraint, 'Attribute: '.$expectedAttribute."\n".$msg);
     return $this;
   }
 
