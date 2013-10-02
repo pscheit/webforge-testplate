@@ -36,6 +36,13 @@ HTML;
     $this->css('section.team')->count(1);
   }
 
+  public function testCSSCalledTwiceFromRootDoesStillWork_ResetsNotHTMLAsContext() {
+    $this->setHTML($this->thtml);
+
+    $this->css('section.team ul')->count(1); // should not set context
+    $this->css('body')->count(1);
+  }
+
   public function testQueryObjectAsCSSToSetContext() {
     $this->html = $this->thtml;
 
