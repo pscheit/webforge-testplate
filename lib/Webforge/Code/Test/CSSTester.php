@@ -71,7 +71,7 @@ class CSSTester {
   }
   
   public function hasAttribute($expectedAttribute, $expectedValue = NULL) {
-    $query = $this->assertquery(__FUNCTION__);
+    $query = $this->assertQuery(__FUNCTION__);
 
     $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: "'.$expectedAttribute.'" nicht. Context: '.\Webforge\Common\String::cut($query->html(), 100,'...'));
     
@@ -82,7 +82,7 @@ class CSSTester {
   }
   
   public function attribute($expectedAttribute, $constraint, $msg = '') {
-    $query = $this->assertquery(__FUNCTION__);
+    $query = $this->assertQuery(__FUNCTION__);
 
     $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' nicht. Context: '.$query->html());
     
@@ -91,7 +91,7 @@ class CSSTester {
   }
 
   public function hasNotAttribute($expectedAttribute) {
-    $query = $this->assertquery(__FUNCTION__);
+    $query = $this->assertQuery(__FUNCTION__);
 
     $this->testCase->assertFalse($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' es wurde aber erwartet, dass es nicht vorhanden sein soll');
     return $this;
@@ -124,7 +124,7 @@ class CSSTester {
   }
 
   public function text($constraint, $msg = NULL) {
-    $query = $this->assertquery(__FUNCTION__);
+    $query = $this->assertQuery(__FUNCTION__);
     
     $this->testCase->assertThat($query->text(), $constraint, $msg ?: sprintf('Text of Element %s matches not constraint', $this->getSelector()));
     return $this;
@@ -143,7 +143,7 @@ class CSSTester {
   }
 
   public function hasStyle($expectedStyle, $expectedValue = NULL) {
-    $query = $this->assertquery(__FUNCTION__);
+    $query = $this->assertQuery(__FUNCTION__);
     
     $this->testCase->assertTrue($query->getElement()->hasAttribute('style'), 'Element hat das Attribut: style nicht: '.$query->html());
     $this->testCase->assertContains($expectedStyle, $query->attr('style'));    
@@ -167,7 +167,7 @@ class CSSTester {
    * Startet einen neuen (Sub)Test mit find($selector)
    */
   public function css($selector) {
-    $this->assertquery(sprintf("css('%s')", $selector));
+    $this->assertQuery(sprintf("css('%s')", $selector));
     $subTest = new static($this->testCase, $this->getQuery()->find($selector));
     $subTest->setParent($this);
 
@@ -175,18 +175,23 @@ class CSSTester {
   }
 
   /**
-   * Sets this css test html as context for the testcase (if its an HTMLTestCase)
+   * Sets this css test html as context for the testcase (if its an HTMLTesting)
    * 
    * this can be handy to reduce the debug output
    */
   public function asContext() {
-    if ($this->testCase instanceof HTMLTestCase) {
-      $this->testCase->setDebugContextHTML($this, 'css: '.$this->getSelector());
+    if ($this->testCase instanceof HTMLTesting) {
+      $export = $this->getQuery()->export();
+      if (is_array($export)) {
+        $export = implode("\n", $export);
+      }
+
+      $this->testCase->setDebugContextHTML($this, $export, 'css: '.$this->getSelector());
     }
     return $this;
   }
   
-  protected function assertquery($function) {
+  protected function assertQuery($function) {
     $query = $this->getQuery();
     $this->testCase->assertNotEmpty($query->getElement(), 'Element kann für '.$function.' nicht überprüft werden, da der Selector 0 zurückgibt: '.$query->getSelector());
     return $query;

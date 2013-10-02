@@ -36,6 +36,23 @@ HTML;
     $this->css('section.team')->count(1);
   }
 
+  public function testQueryObjectAsCSSToSetContext() {
+    $this->html = $this->thtml;
+
+    $section = $this->css('section')->getQuery();
+
+    $this->css($section)->asContext()
+      ->css('ul li')->count(4);
+  }
+
+  public function testSetsContextWithSetHTML() {
+    $this->html = $this->thtml;
+
+    $this->css('section ul li:eq(0)')->asContext();
+
+    $this->assertEquals('<li>RoadRunner</li>', $this->html);
+  }
+
   public function testexamples() {
 $this->html = <<<'HTML'
 <div class="team">

@@ -227,8 +227,12 @@ class Base extends Assertions {
   }
 
   // HTMLTesting Interface
-
   public function setHTML($html) {
+    $this->html = $html;
+    return $this;
+  }
+
+  public function setDebugContextHTML(CSSTester $css, $html, $selectorInfo) {
     $this->html = $html;
     return $this;
   }

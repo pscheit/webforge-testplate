@@ -8,4 +8,6 @@ interface HTMLTesting {
 
   public function setHTML($html);
 
+  public function setDebugContextHTML(CSSTester $css, $contextHtml, $selectorInfo);
+
 }
