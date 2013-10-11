@@ -24,6 +24,7 @@ in your bootstrap.php. If you use `registerCMSContainer` this is already done.
 ## usage (css tester)
 
 if you install `webforge/dom` along testplate you can use fancy css tests (when you extend from `Webforge\Code\Test\Base`).
+In your class implement: `Webforge\Code\Test\HTMLTesting` (base is already doing this, you only have to enable it)
 
 ```php
 $this->html = <<<'HTML'
