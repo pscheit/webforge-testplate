@@ -24,8 +24,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Webforge\\Code\\Test": ["lib/", "tests/"],
-            "Webforge\\Common": ["D:\\www\\webforge-common\\lib"]
+            "Webforge\\Code\\Test": ["lib/", "tests/"]
         }
     },
     "extra": {
