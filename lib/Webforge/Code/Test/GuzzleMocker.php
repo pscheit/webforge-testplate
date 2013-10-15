@@ -35,9 +35,9 @@ class GuzzleMocker {
     
   }
 
-  public function getClient() {
+  public function getClient($baseUrl = NULL) {
     if (!isset($this->client)) {
-      $this->client = new \Guzzle\Http\Client();
+      $this->client = new \Guzzle\Http\Client($baseUrl);
       $this->client->addSubscriber($this->plugin);
     }
 
