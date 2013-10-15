@@ -59,7 +59,7 @@ This looks nice, isn't it? But I'm way more to lazy to create such a file for al
 
 ```php
     $method = 'GET';
-    $file = $this->getTestDirectory('guzzle-responses/TVDB/search-bbt.guzzle-response');
+    $file = $this->getTestDirectory()->getFile('guzzle-responses/TVDB/search-bbt.guzzle-response');
     $url = 'http://somwhere.to.your.api.com/?search=bbt';
 
     $client = new \Guzzle\Http\Client();
