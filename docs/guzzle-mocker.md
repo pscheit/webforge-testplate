@@ -55,24 +55,22 @@ Vary: User-Agent,Accept-Encoding
 </html>
 ```
 
-This looks nice, isn't it? But I'm way more to lazy to create such a file for all those acceptance tests. Lets write them our self!
+This looks nice, isn't it? But I'm way more to lazy to create such a file for all those acceptance tests. Thats why the guzzleMocker can now record the last record made. 
 
+## Recording real requests as mocks
+
+You can use: 
 ```php
-    $method = 'GET';
-    $file = $this->getTestDirectory()->getFile('guzzle-responses/TVDB/search-bbt.guzzle-response');
-    $url = 'http://somwhere.to.your.api.com/?search=bbt';
-
-    $client = new \Guzzle\Http\Client();
-    $request = $client->createRequest($method, $url);
-
-    $response = $request->send();
-
-    $file->getDirectory()->create();
-    $file->writeContents((string) $response);
+$this->guzzleMocker->recordLastResponse('target-dir/name-of-response');
 ```
 
 Thats it! Use Guzzle to receive it and to write it. The debug-format from Guzzle is exactly what the guzzle mock plugin is trying to read. 
-You can even use this to save POST requests or anything. Get your tests mocked down in a few seconds :)
+You can even use this to save POST requests or anything. Get your tests mocked down in a few seconds. Your workflow would be like this
+
+  1. Create your client as a real client (with a real guzzle client instance)
+  1. write a test that actually uses the remote server to create a service request (and response)
+  1. use `guzzleMocker::recordLastResponse($responseLocation)` to record the last request. Run your test isolated to record the right request
+  1. use `guzzleMocker::addResponse($responseLocation)` to make your mocked guzzle client expect the recorded response and inject it into your client
 
 You can now start testing your Service and start mocking your responses the service should get. If this is not enough for your testing, you can use: 
 ```php

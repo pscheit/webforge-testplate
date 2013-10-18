@@ -29,7 +29,6 @@ class BaseFrameworkTest extends Base {
 
   public function testFrameworkHelperCanCreateAEnvironmentContainer() {
     $this->assertInstanceOf('Webforge\Code\Test\FrameworkHelper', $this->frameworkHelper);
-
     $this->assertInstanceOf('Webforge\CMS\EnvironmentContainer', $this->frameworkHelper->createEnvironmentContainer());
   }
 }

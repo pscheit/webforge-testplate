@@ -6,12 +6,15 @@ use Webforge\Common\System\Dir;
 use Webforge\Common\System\File;
 use Webforge\Common\String as S;
 use Guzzle\Plugin\Mock\MockPlugin;
+use Guzzle\Plugin\History\HistoryPlugin;
+use Guzzle\HTTP\Message\Response as GuzzleResponse;
 
 /**
  * Creates a unit testable Guzzle Client and mocks its responses from files
  * 
  */
 class GuzzleMocker {
+
 
   /**
    * 
@@ -24,6 +27,11 @@ class GuzzleMocker {
   protected $plugin;
 
   /**
+   * @var Guzzle\Plugin\History\HistoryPlugin
+   */
+  protected $history;
+
+  /**
    * @var Dir
    */
   protected $responseDirectory;
@@ -31,14 +39,15 @@ class GuzzleMocker {
   public function __construct(Dir $responseDirectory) {
     $this->responseDirectory = $responseDirectory;
 
-    $this->plugin = new \Guzzle\Plugin\Mock\MockPlugin();
-    
+    $this->plugin = new MockPlugin();
+    $this->history = new HistoryPlugin();
   }
 
   public function getClient($baseUrl = NULL) {
     if (!isset($this->client)) {
       $this->client = new \Guzzle\Http\Client($baseUrl);
       $this->client->addSubscriber($this->plugin);
+      $this->client->addSubscriber($this->history);
     }
 
     return $this->client;
@@ -63,6 +72,29 @@ class GuzzleMocker {
     } else {
       return $this->plugin->addResponse($response);
     }
+  }
+
+  /**
+   * Records a Response Result to an api to a file which then can be used for the guzzle Mocker
+   * 
+   * @param string the name where to store the response
+   */
+  public function record(GuzzleResponse $response, $responseName) {
+    $fileUrl = S::expand(rtrim($responseName, '/'), '.guzzle-response');
+    $file = File::createFromUrl($fileUrl, $this->responseDirectory);
+    $file->getDirectory()->create();
+
+    $file->writeContents((string) $response);
+
+    return $file;
+  }
+
+  /**
+   * Records the last response which was made with the guzzle mocked client
+   * @return Webforge\Common\System\File written file
+   */
+  public function recordLastResponse($responseName) {
+    return $this->record($this->history->getLastRequest()->getResponse(), $responseName);
   }
 
   public function getReceivedRequests() {
