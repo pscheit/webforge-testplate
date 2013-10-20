@@ -58,7 +58,7 @@ class Assertions extends \PHPUnit_Framework_TestCase {
     } catch (\Exception $e) {
       $this->assertInstanceOf($class, $e,
                               sprintf("Exception hat nicht die richtige Klasse (expected: '%s' actual:'%s'):\n%s\n%s",
-                                      $class, \Psc\Code\Code::getClass($e), $e, $debugMessage)
+                                      $class, get_class($e), $e, $debugMessage)
                              );
       
       if (isset($expectedCode)) {

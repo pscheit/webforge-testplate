@@ -16,7 +16,8 @@
         "webforge/translation": "1.1.*@dev",
         "webforge/webforge": "1.4.*@dev",
         "guzzle/guzzle": "3.5.*",
-        "webforge/dom": "*"
+        "webforge/dom": "*",
+        "liip/rmt": "0.9.*"
     },
     "suggest": {
         "guzzle/guzzle": "Needed for the GuzzleTester",
