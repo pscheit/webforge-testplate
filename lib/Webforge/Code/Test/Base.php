@@ -12,7 +12,7 @@ use Webforge\Common\System\Util as SystemUtil;
 use Webforge\Common\ClassUtil;
 use Webforge\Common\DeprecatedException;
 use Psc\System\Console\Process;
-
+use Webforge\Process\ProcessBuilder;
 use Webforge\Translation\TranslationsBuilder;
 
 /**
@@ -185,12 +185,12 @@ class Base extends Assertions {
   // SYSTEM UTILS
 
   /**
-   * @return Psc\System\Console\Process
+   * @return Symfony\Component\Process\Process
    */
   public function runPHPFile(File $phpFile) {
     $phpBin = SystemUtil::findPHPBinary();
     
-    $process = Process::build($phpBin, array(), array('f'=>$phpFile))->end();
+    $process = ProcessBuilder::create()->add($phpBin)->add('-f')->add($phpFile)->getProcess();
     $process->run();
     
     $this->assertTrue($process->isSuccessful(),
