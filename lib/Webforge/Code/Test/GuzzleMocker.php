@@ -5,6 +5,7 @@ namespace Webforge\Code\Test;
 use Webforge\Common\System\Dir;
 use Webforge\Common\System\File;
 use Webforge\Common\String as S;
+use Webforge\Common\Preg;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Plugin\History\HistoryPlugin;
 use Guzzle\HTTP\Message\Response as GuzzleResponse;
@@ -36,8 +37,14 @@ class GuzzleMocker {
    */
   protected $responseDirectory;
 
-  public function __construct(Dir $responseDirectory) {
+  /**
+   * @var Dir
+   */
+  protected $requestDirectory;
+
+  public function __construct(Dir $responseDirectory, Dir $requestDirectory = NULL) {
     $this->responseDirectory = $responseDirectory;
+    $this->requestDirectory = $requestDirectory ?: $this->responseDirectory->sub('../requests/');
 
     $this->plugin = new MockPlugin();
     $this->history = new HistoryPlugin();
@@ -75,18 +82,49 @@ class GuzzleMocker {
   }
 
   /**
-   * Records a Response Result to an api to a file which then can be used for the guzzle Mocker
+   * Records a Response/Request to an api to a file which then can be used for the guzzle Mocker
    * 
-   * @param string the name where to store the response
+   * @param string the name where to store the response/request
+   * @return file written file
    */
-  public function record(GuzzleResponse $response, $responseName) {
-    $fileUrl = S::expand(rtrim($responseName, '/'), '.guzzle-response');
-    $file = File::createFromUrl($fileUrl, $this->responseDirectory);
-    $file->getDirectory()->create();
+  public function record($responseOrRequest, $name, array $normalizeHeaders = array('Authorization')) {
+    if ($responseOrRequest instanceof GuzzleResponse) {
+      $type = 'response';
+      $directory = $this->responseDirectory;
+    } else {
+      $type = 'request';
+      $directory = $this->requestDirectory;
+    }
 
-    $file->writeContents((string) $response);
+    $fileUrl = S::expand(rtrim($name, '/'), '.guzzle-'.$type);
+    $file = File::createFromUrl($fileUrl, $directory);
+
+    $file->getDirectory()->create();
+    $file->writeContents($this->normalizeHeaders((string) $responseOrRequest, $normalizeHeaders));
 
     return $file;
+  }
+
+  /**
+   * Returns the text from the reponse/request with normalized headers and viewed line-endings
+   * 
+   * @return string
+   */
+  public function normalizeMessageText($messageText, $normalizeHeaders = array('Authorization')) {
+    // remove authorization and such
+    $messageText = $this->normalizeHeaders($messageText, $normalizeHeaders);
+
+    return S::eolVisible($messageText);
+  }
+
+  /**
+   * @return string
+   */
+  public function normalizeHeaders($messageText, Array $headers) {
+    if (count($headers) == 0) return $messageText;
+
+    $fieldsRegexp = implode('|', array_map('preg_quote', $headers));
+    return Preg::replace($messageText, '/^('.$fieldsRegexp.'):(.*)$/im', '\1: (normalized)');
   }
 
   /**
@@ -95,6 +133,18 @@ class GuzzleMocker {
    */
   public function recordLastResponse($responseName) {
     return $this->record($this->history->getLastRequest()->getResponse(), $responseName);
+  }
+
+  /**
+   * Records the last response which was made with the guzzle mocked client
+   * @return Webforge\Common\System\File written file
+   */
+  public function recordLastRequest($requestName) {
+    return $this->record($this->history->getLastRequest(), $requestName);
+  }
+
+  public function getHistory() {
+    return $this->history;
   }
 
   public function getReceivedRequests() {
