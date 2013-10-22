@@ -72,8 +72,12 @@ You can even use this to save POST requests or anything. Get your tests mocked d
   1. use `guzzleMocker::recordLastResponse($responseLocation)` to record the last request. Run your test isolated to record the right request
   1. use `guzzleMocker::addResponse($responseLocation)` to make your mocked guzzle client expect the recorded response and inject it into your client
 
+## Testing requests made
+
 You can now start testing your Service and start mocking your responses the service should get. If this is not enough for your testing, you can use: 
 ```php
 $this->guzzleMocker->getReceivedRequests();
 ```
 to get a list of the triggered requests from the service (in order) and assert them however you like.
+
+> be aware: this array is empty if you don't add a response to the guzzle mocker (this is a limitation from the guzzle plugin)
