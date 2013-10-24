@@ -143,6 +143,10 @@ class GuzzleMocker {
     return $this->record($this->history->getLastRequest(), $requestName);
   }
 
+  public function getLastResponse() {
+    return $this->history->getLastRequest()->getResponse();
+  }
+
   public function getHistory() {
     return $this->history;
   }
