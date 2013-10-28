@@ -2,8 +2,8 @@
 
 namespace Webforge\Code\Test;
 
-use Webforge\CMS\EnvironmentContainer;
-use Webforge\CMS\Session;
+use Psc\CMS\EnvironmentContainer;
+use Psc\CMS\Session;
 use Webforge\Common\Mock\Session as SessionMock;
 
 class FrameworkHelper {

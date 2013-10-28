@@ -13,11 +13,8 @@ class BaseFrameworkTest extends Base {
   }
 
   public function testGetPackageReturnsTheLocalWebforgePackage() {
-    $GLOBALS['env']['container'] = (object) array('webforge'=>$mock = $this->getMock('Webforge\Framework\Container'));
-
-    $mock->expects($this->once())->method('getLocalPackage');
-
-    $this->getPackage();
+    $this->assertInstanceOf('Webforge\Framework\Package\Package', $package = $this->getPackage());
+    $this->assertEquals('webforge/testplate', $package->getIdentifier());
   }
 
   public function testGetPackageDirIsAFakeAndReturnsTheGlobalsEnvRootDir() {
@@ -29,6 +26,6 @@ class BaseFrameworkTest extends Base {
 
   public function testFrameworkHelperCanCreateAEnvironmentContainer() {
     $this->assertInstanceOf('Webforge\Code\Test\FrameworkHelper', $this->frameworkHelper);
-    $this->assertInstanceOf('Webforge\CMS\EnvironmentContainer', $this->frameworkHelper->createEnvironmentContainer());
+    $this->assertInstanceOf('Psc\CMS\EnvironmentContainer', $this->frameworkHelper->createEnvironmentContainer());
   }
 }

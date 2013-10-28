@@ -13,10 +13,10 @@
         "webforge/common": ">=1.1@dev"
     },
     "require-dev": {
-        "webforge/translation": "1.1.*@dev",
-        "webforge/webforge": "1.4.*@dev",
-        "guzzle/guzzle": "3.5.*",
-        "webforge/dom": "*",
+        "webforge/webforge": "dev-master",
+        "pscheit/psc-cms": "dev-master",
+        "webforge/dom": "dev-master",
+        "guzzle/guzzle": "3.7.*",
         "liip/rmt": "0.9.*"
     },
     "suggest": {

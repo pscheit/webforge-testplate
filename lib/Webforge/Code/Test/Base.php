@@ -170,7 +170,7 @@ class Base extends Assertions {
    */
   public function getPackage() {
     // this is only defined if bootstrap container is avaible and webforge is avaible
-    return $this->frameworkHelper->getWebforge()->getLocalPackage();
+    return $this->frameworkHelper->getBootContainer()->getPackage();
   }
 
   /**
@@ -178,7 +178,6 @@ class Base extends Assertions {
    */
   public function getPackageDir($sub) {
     return $GLOBALS['env']['root']->sub($sub);
-    //return $this->getPackage()->getRootDirectory()->sub($sub);
   }
 
 
