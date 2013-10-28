@@ -13,6 +13,7 @@
         "webforge/common": ">=1.1@dev"
     },
     "require-dev": {
+        "webforge/translation": "@stable",
         "webforge/webforge": "dev-master",
         "pscheit/psc-cms": "dev-master",
         "webforge/dom": "dev-master",
