@@ -21,4 +21,18 @@ class FrameworkHelper {
   public function createSession() {
     return new SessionMock();
   }
+
+  /**
+   * @return Webforge\Setup\BootContainer
+   */
+  public function getBootContainer() {
+    return $GLOBALS['env']['container'];
+  }
+
+  /**
+   * @return Webforge\Framework\Container
+   */
+  public function getWebforge() {
+    return $this->getBootContainer()->getWebforge();
+  }
 }
