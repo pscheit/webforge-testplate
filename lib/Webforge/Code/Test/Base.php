@@ -239,4 +239,18 @@ class Base extends Assertions {
   public function getHTML() {
     return $this->html;
   }
+
+  /**
+   * @return Webforge\Code\Test\GuzzleResponseAsserter
+   */
+  public function assertGuzzleResponse($response) {
+    return GuzzleResponseAsserter::create($response);
+  }
+
+  /**
+   * @return Webforge\Code\Test\GuzzleTester
+   */
+  public function createGuzzleTester($baseUrl) {
+    return new GuzzleTester($baseUrl);
+  }
 }

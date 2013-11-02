@@ -151,6 +151,21 @@ class GuzzleTester {
     }
   }
 
+  public function dispatchHTML($request = NULL) {
+    $response = $this->dispatch($request);
+
+    $raw = $response->getBody($asString = TRUE);
+
+    return $raw;
+  }
+
+  /**
+   * @return Webforge\Code\Test\GuzzleResponseAsserter
+   */
+  public function assertResponse($response = NULL) {
+    return new GuzzleResponseAsserter($response ?: $this->response);
+  }
+
   public function setDefaultAuth($user, $password) {
     $this->defaultAuth = array($user, $password);
     return $this;
