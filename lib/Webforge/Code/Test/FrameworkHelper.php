@@ -30,6 +30,13 @@ class FrameworkHelper {
   }
 
   /**
+   * @return Webforge\Framework\Project
+   */
+  public function getProject() {
+    return $this->getBootContainer()->getProject();
+  }
+
+  /**
    * @return Webforge\Framework\Container
    */
   public function getWebforge() {

@@ -5,6 +5,7 @@ namespace Webforge\Code\Test;
 use Webforge\Common\JS\JSONConverter;
 use Webforge\Common\JS\JSONParsingException;
 use RuntimeException;
+use LogicException;
 
 /**
  * Tests an CMS Service with real requests to some api url
@@ -115,6 +116,10 @@ class GuzzleTester {
    * @return Guzzle\Http\Message\ResponseInterface
    */
   public function dispatch($request = NULL) {
+    if (!isset($request) && !isset($this->request)) {
+      throw new LogicException('Wether $request is passed to dispatch() nor $this->request is set. use get/put/delete/post() to set a request first.');
+    }
+
     try {
       return $this->response = $this->getClient()->send($this->request = $request ?: $this->request);
     } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
