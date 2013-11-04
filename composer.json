@@ -13,6 +13,7 @@
         "webforge/common": "*"
     },
     "require-dev": {
+        "psc-cms": "dev-master",
         "webforge/translation": "dev-master",
         "webforge/webforge": "dev-master",
         "webforge/dom": "*",
