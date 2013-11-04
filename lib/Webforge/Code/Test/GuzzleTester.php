@@ -6,7 +6,8 @@ use Webforge\Common\JS\JSONConverter;
 use Webforge\Common\JS\JSONParsingException;
 use RuntimeException;
 use LogicException;
-
+use Guzzle\Plugin\Cookie\CookiePlugin;
+use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
 /**
  * Tests an CMS Service with real requests to some api url
  * 
@@ -173,6 +174,12 @@ class GuzzleTester {
 
   public function setDefaultAuth($user, $password) {
     $this->defaultAuth = array($user, $password);
+    return $this;
+  }
+
+  public function useCookies() {
+    $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
+    $this->getClient()->addSubscriber($cookiePlugin);
     return $this;
   }
 
