@@ -2,12 +2,12 @@
 
 namespace Webforge\Code\Test;
 
-use Guzzle\Http\Message\Response;
+use Symfony\Component\HttpFoundation\Response;
 
-class GuzzleResponseAsserter extends AbstractResponseAsserter {
+class SymfonyResponseAsserter extends AbstractResponseAsserter {
 
   public function __construct(Response $response) {
-    $this->assertionClass = __NAMESPACE__.'\\GuzzleAssertion';
+    $this->assertionClass = __NAMESPACE__.'\\SymfonyAssertion';
     $this->response = $response;
   }
 
@@ -20,10 +20,10 @@ class GuzzleResponseAsserter extends AbstractResponseAsserter {
   }
 
   protected function getBodyAsString() {
-    return (string) $this->response->getBody();
+    return (string) $this->response->getContent();
   }
 
   protected function isContentType($contentType) {
-    return $this->response->isContentType($contentType);
+    return $this->response->headers->get('content-type') === $contentType;
   }
 }

@@ -247,6 +247,13 @@ class Base extends Assertions {
     return GuzzleResponseAsserter::create($response);
   }
 
+  /*
+   * @return Webforge\Code\Test\GuzzleResponseAsserter
+   */
+  public function assertSymfonyResponse($response) {
+    return SymfonyResponseAsserter::create($response);
+  }
+
   /**
    * @return Webforge\Code\Test\GuzzleTester
    */
