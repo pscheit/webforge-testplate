@@ -15,7 +15,6 @@
     "require-dev": {
         "webforge/translation": "dev-master",
         "webforge/webforge": "dev-master",
-        "guzzle/guzzle": "3.5.*",
         "webforge/dom": "*",
         "liip/rmt": "0.9.*"
     },
