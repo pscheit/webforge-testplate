@@ -125,10 +125,12 @@ class GuzzleTester {
       return $this->response = $this->getClient()->send($this->request = $request ?: $this->request);
     } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
       return $this->handleServerError($e);
+    } catch (\Guzzle\Http\Exception\BadResponseException $e) {
+      return $this->handleServerError($e);
     }
   }
 
-  public function handleServerError(\Guzzle\Http\Exception\ServerErrorResponseException $e) {
+  public function handleServerError($e) {
     $this->response = $e->getResponse();
 
     if (

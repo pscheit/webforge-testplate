@@ -20,6 +20,7 @@ abstract class AbstractResponseAsserter {
 
   abstract protected function getCode();
   abstract protected function isContentType($contentType);
+  abstract protected function getContentType();
   abstract protected function getBodyAsString();
 
   public function body($content) {
@@ -46,7 +47,7 @@ abstract class AbstractResponseAsserter {
 
     if (!$this->isContentType($contentType)) {
       throw $this->newAssertion(
-        sprintf('Response ContentType %s does not match %s (%s)', $this->response->getContentType(), $formatOrContentType, $contentType)
+        sprintf('Response ContentType "%s" does not match %s (%s)', $this->getContentType(), $formatOrContentType, $contentType)
       );
     }
 

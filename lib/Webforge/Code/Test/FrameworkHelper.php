@@ -8,6 +8,8 @@ use Webforge\Common\Mock\Session as SessionMock;
 
 class FrameworkHelper {
 
+  protected $projectContainer;
+
   public function createEnvironmentContainer(Session $session = NULL) {
     $env = new EnvironmentContainer();
 
@@ -34,6 +36,13 @@ class FrameworkHelper {
    */
   public function getBootContainer() {
     return $GLOBALS['env']['container'];
+  }
+
+  public function getProjectContainer() {
+    if (!isset($this->projectContainer))
+      $this->projectContainer = new \Webforge\ProjectStack\Container($this->getProject());
+
+    return $this->projectContainer;
   }
 
   /**

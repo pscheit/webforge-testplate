@@ -9,6 +9,7 @@ use Webforge\Common\Preg;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Plugin\History\HistoryPlugin;
 use Guzzle\HTTP\Message\Response as GuzzleResponse;
+use Guzzle\Http\Message\RequestFactory;
 
 /**
  * Creates a unit testable Guzzle Client and mocks its responses from files
@@ -141,6 +142,19 @@ class GuzzleMocker {
    */
   public function recordLastRequest($requestName) {
     return $this->record($this->history->getLastRequest(), $requestName);
+  }
+
+  public function createRequestFromFile($fileOrName) {
+    if ($fileOrName instanceof File) {
+      $file = $fileOrName;
+    } else {
+      $fileUrl = S::expand(rtrim($fileOrName, '/'), '.guzzle-request');
+      $file = $this->requestDirectory->getFile($fileUrl);
+    }
+
+    $request = RequestFactory::getInstance()->fromMessage($file->getContents());
+
+    return $request;
   }
 
   public function getLastResponse() {

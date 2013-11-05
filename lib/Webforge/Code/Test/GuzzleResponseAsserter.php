@@ -26,4 +26,8 @@ class GuzzleResponseAsserter extends AbstractResponseAsserter {
   protected function isContentType($contentType) {
     return $this->response->isContentType($contentType);
   }
+
+  protected function getContentType() {
+    return $this->response->getContentType();
+  }
 }

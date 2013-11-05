@@ -26,4 +26,8 @@ class SymfonyResponseAsserter extends AbstractResponseAsserter {
   protected function isContentType($contentType) {
     return $this->response->headers->get('content-type') === $contentType;
   }
+
+  protected function getContentType() {
+    return $this->response->headers->get('content-type');
+  }
 }
