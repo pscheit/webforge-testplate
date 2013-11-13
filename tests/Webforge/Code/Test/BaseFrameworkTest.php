@@ -28,4 +28,8 @@ class BaseFrameworkTest extends Base {
     $this->assertInstanceOf('Webforge\Code\Test\FrameworkHelper', $this->frameworkHelper);
     $this->assertInstanceOf('Psc\CMS\EnvironmentContainer', $this->frameworkHelper->createEnvironmentContainer());
   }
+
+  public function testReturnsASystem() {
+    $this->assertInstanceOf('Webforge\Common\System\System', $this->frameworkHelper->getSystem());
+  }
 }

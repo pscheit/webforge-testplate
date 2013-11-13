@@ -51,4 +51,11 @@ class FrameworkHelper {
   public function getWebforge() {
     return $this->getBootContainer()->getWebforge();
   }
+
+  /**
+   * @return Webforge\Common\System\System
+   */
+  public function getSystem() {
+    return $this->getWebforge()->getSystemContainer()->getSystem();
+  }
 }
