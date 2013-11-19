@@ -254,5 +254,8 @@ class Assertions extends \PHPUnit_Framework_TestCase {
         return new InvokedAtMethodGroupIndexMatcher($groupIndex, $method, $methodGroup);
     }
 
+  public function countEqualTo($expectedCount) {
+    return new \PHPUnit_Framework_Constraint_Count($expectedCount);
+  }
 }
 ?>
