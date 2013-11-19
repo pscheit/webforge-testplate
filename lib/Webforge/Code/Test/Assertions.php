@@ -79,8 +79,8 @@ class Assertions extends \PHPUnit_Framework_TestCase {
     return $this->assertException('PHPUnit_Framework_AssertionFailedError', $closure, NULL, $expectedMessage, $debugMessage);
   }
   
-  public function expectAssertionFail() {
-    $this->setExpectedException('PHPUnit_Framework_AssertionFailedError');
+  public function expectAssertionFail($msg = NULL) {
+    $this->setExpectedException('PHPUnit_Framework_AssertionFailedError', $msg);
   }
 
   public function assertInstanceOfCollection($actual, $message = '') {
@@ -223,6 +223,10 @@ class Assertions extends \PHPUnit_Framework_TestCase {
                                 ));
 
     return $test;
+  }
+
+  protected function assertThatObject($object){
+    return new ObjectAsserter($object, $this);
   }
 
     /**
