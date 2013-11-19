@@ -22,7 +22,7 @@ Guzzle:
 ```php
 $response = new \Guzzle\Http\Message\Response(304, array('content-type'=>'text/html'), 'html-body');
 
-$this->assertSymfonyResponse($response)
+$this->assertGuzzleResponse($response)
    ->body('html-body')
    ->code(304)
    ->format('html');
