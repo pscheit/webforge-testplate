@@ -61,6 +61,18 @@ class ObjectAsserter {
   }
 
   /**
+   * @param int|mixed $constraint
+   */
+  public function length($constraint) {
+    if (is_numeric($constraint)) {
+      $constraint = $this->test->equalTo($constraint);
+    }
+
+    $this->test->assertThat(count($this->object), $constraint, $this->msg('%s length does not match', $this->path()));
+    return $this;
+  }
+
+  /**
    * Asserts that the current array has an key $index
    * 
    * @param mixed $constraint use a phpunit constraint to check against the value of the property. If this is a string equalTo() is assumed

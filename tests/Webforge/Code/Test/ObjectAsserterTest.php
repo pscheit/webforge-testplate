@@ -175,6 +175,28 @@ class ObjectAsserterTest extends Base {
       ->property('project')->property('author')->property('firstName', 'WrongFirstName');
   }
 
+  public function testLengthOfArrayCanBeExpressedWithNumberToEqual() {
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('repositories')->isArray()->length(2);
+
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('repositories')->isArray()->length($this->equalTo(2));
+  }
+
+  public function testLengthOfArrayCanBeExpressedGreaterThanConstraint() {
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('repositories')->isArray()->length($this->greaterThan(1));
+  }
+
+  public function testLengthOfArrayCanBeExpressedGreaterThanConstraint_AndFails() {
+    $this->expectAssertionFail('length');
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('repositories')->isArray()->length($this->greaterThan(2));
+  }
 
   public function testDocuExample() {
     $this->assertThatObject($this->o)
