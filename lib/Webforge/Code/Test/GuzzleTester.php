@@ -134,7 +134,7 @@ class GuzzleTester {
     $this->response = $e->getResponse();
 
     if (
-      $this->response->getStatusCode() >= 400 && 
+      $this->response && $this->response->getStatusCode() >= 400 && 
       $this->response->getHeader('X-Psc-Cms-Error') == 'true' && 
       ($msg = $this->response->getHeader('X-Psc-Cms-Error-Message')) != NULL
     ) {
