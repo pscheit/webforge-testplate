@@ -39,7 +39,7 @@ class CSSTester {
     }
 
     $this->msgs = array(
-      'hasClass'=>"Element %s hat die Klasse: '%s' nicht. %s",
+      'hasClass'=>"Element hat die Klasse: '%s' nicht. %s.%s",
       'no-html'=>'html ist leer. Wurde als 2ter Parameter möglicherweise kein HTML übergeben? Oder $this->html wurde gesetzt aber der TestCase implementiert nicht Webforge\Code\Test\HTMLTesting?'
     );
   }
@@ -73,10 +73,10 @@ class CSSTester {
   public function hasAttribute($expectedAttribute, $expectedValue = NULL) {
     $query = $this->assertQuery(__FUNCTION__);
 
-    $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: "'.$expectedAttribute.'" nicht. Context: '.\Webforge\Common\String::cut($query->html(), 100,'...'));
+    $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: "'.$expectedAttribute.'" nicht.'.$this->debugElement($query));
     
     if (func_num_args() >= 2) {
-      $this->testCase->assertEquals($expectedValue, $query->attr($expectedAttribute), 'Wert des Attributes '.$expectedAttribute.' ist nicht identisch');
+      $this->testCase->assertEquals($expectedValue, $query->attr($expectedAttribute), 'Wert des Attributes '.$expectedAttribute.' ist nicht identisch. '.$this->debugElement($query));
     }
     return $this;
   }
@@ -84,29 +84,35 @@ class CSSTester {
   public function attribute($expectedAttribute, $constraint, $msg = '') {
     $query = $this->assertQuery(__FUNCTION__);
 
-    $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' nicht. Context: '.$query->html());
+    $this->testCase->assertTrue($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' nicht.'.$this->debugElement($query));
     
-    $this->testCase->assertThat($query->attr($expectedAttribute), $constraint, 'Attribute: '.$expectedAttribute."\n".$msg);
+    $this->testCase->assertThat($query->attr($expectedAttribute), $constraint, 'Attribute: '.$expectedAttribute."\n".$msg.$this->debugElement($query));
     return $this;
   }
 
   public function hasNotAttribute($expectedAttribute) {
     $query = $this->assertQuery(__FUNCTION__);
 
-    $this->testCase->assertFalse($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' es wurde aber erwartet, dass es nicht vorhanden sein soll');
+    $this->testCase->assertFalse($query->getElement()->hasAttribute($expectedAttribute), 'Element hat das Attribut: '.$expectedAttribute.' es wurde aber erwartet, dass es nicht vorhanden sein soll.'.$this->debugElement($query));
     return $this;
   }
   
   public function hasClass($expectedClass, $msg = '') {
+    $query = $this->getQuery();
     $this->testCase->assertTrue(
-      $this->getQuery()->hasClass($expectedClass), 
-      sprintf($this->msgs[__FUNCTION__], $this->getSelector(), $expectedClass, $msg)
+      $query->hasClass($expectedClass), 
+      sprintf($this->msgs[__FUNCTION__], $expectedClass, $msg, $this->debugElement($query))
     );
     return $this;
   }
 
   public function hasNotClass($expectedClass) {
-    $this->testCase->assertFalse($this->getQuery()->hasClass($expectedClass), 'Element hat die Klasse: '.$expectedClass.' obwohl es sie nicht haben soll');
+    $query = $this->assertQuery(__FUNCTION__);
+
+    $this->testCase->assertFalse(
+      $query->hasClass($expectedClass), 
+      'Element hat die Klasse: '.$expectedClass.' obwohl es sie nicht haben soll'.$this->debugElement($query)
+    );
     return $this;
   }
 
@@ -211,6 +217,12 @@ class CSSTester {
     }
     
     return $this->query;
+  }
+
+  protected function debugElement(Query $query) {
+    $el = new Query($query->getELement());
+
+    return sprintf("\nElement: '%s'\n%s", $query->getSelector(), $el->outerHtml());
   }
 
   public function getjQuery() {
