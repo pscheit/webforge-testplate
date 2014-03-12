@@ -111,6 +111,19 @@ class ObjectAsserter {
     return $this;
   }
 
+
+  public function debug() {
+    var_dump($this->object);
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function get() {
+    return $this->object;
+  }
+
   protected function addPath($item) {
     return array_merge($this->path, array($item));
   }

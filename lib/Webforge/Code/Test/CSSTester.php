@@ -40,7 +40,8 @@ class CSSTester {
 
     $this->msgs = array(
       'hasClass'=>"Element hat die Klasse: '%s' nicht. %s.%s",
-      'no-html'=>'html ist leer. Wurde als 2ter Parameter möglicherweise kein HTML übergeben? Oder $this->html wurde gesetzt aber der TestCase implementiert nicht Webforge\Code\Test\HTMLTesting?'
+      'no-html'=>'html ist leer. Wurde als 2ter Parameter möglicherweise kein HTML übergeben? Oder $this->html wurde gesetzt aber der TestCase implementiert nicht Webforge\Code\Test\HTMLTesting?',
+      'exists'=>"Das Element mit dem Selector '%s' kann nicht gefunden werden. %s"
     );
   }
   
@@ -165,7 +166,14 @@ class CSSTester {
    * 
    */
   public function exists($message = '') {
-    $this->testCase->assertGreaterThan(0,count($this->getQuery()));
+    $query = $this->getQuery();
+
+    $this->testCase->assertGreaterThan(
+      0, 
+      count($query),
+      sprintf($this->msgs[__FUNCTION__], $query->getSelector(), $message)
+    );
+
     return $this;
   }
   
