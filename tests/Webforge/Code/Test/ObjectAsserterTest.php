@@ -32,7 +32,8 @@ class ObjectAsserterTest extends Base {
       "credits": 7
     },
 
-    "url": "www.repo.com"
+    "url": "www.repo.com",
+    "id": 7
   }
 }'
     );
@@ -169,6 +170,19 @@ class ObjectAsserterTest extends Base {
           ->key(0, $this->isEmpty());
   }
 
+  public function testPropertySecondArgumentCanBeScalarValue() {
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('id', 7);
+  }
+
+  public function testPropertySecondArgumentScalarFail() {
+    $this->expectAssertionFail('7 matches expected 0');
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('id', 0);
+  }
+
   public function testPropertyConstraintAsStringIsEqualTo() {
     $this->expectAssertionFail('two strings are equal');
     $this->assertThatObject($this->o)
@@ -196,6 +210,19 @@ class ObjectAsserterTest extends Base {
     $this->assertThatObject($this->o)
       ->property('project')
         ->property('repositories')->isArray()->length($this->greaterThan(2));
+  }
+
+  public function testGettingOfNestedProperty() {
+    $this->assertEquals(
+      (object) array(
+        "url"=> "http://github.com/pschei/repository.git",
+        "type"=> "vcs"
+      ),
+      $this->assertThatObject($this->o)
+        ->property('project')
+          ->property('repositories')
+            ->key(0)->get()
+    );
   }
 
   public function testDocuExample() {

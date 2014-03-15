@@ -52,7 +52,7 @@ class ObjectAsserter {
    * @param mixed $constraint use a phpunit constraint to check against the value of the property. If this is a string equalTo() is assumed
    */
   public function is($constraint) {
-    if (is_string($constraint)) {
+    if (!$this->isConstraint($constraint)) {
       $constraint = $this->test->equalTo($constraint);
     }
 
@@ -64,7 +64,7 @@ class ObjectAsserter {
    * @param int|mixed $constraint
    */
   public function length($constraint) {
-    if (is_numeric($constraint)) {
+    if (!$this->isConstraint($constraint)) {
       $constraint = $this->test->equalTo($constraint);
     }
 
@@ -144,5 +144,9 @@ class ObjectAsserter {
     $msg = array_shift($args);
 
     return vsprintf($msg, $args);
+  }
+
+  protected function isConstraint($constraint) {
+    return $constraint instanceof \PHPUnit_Framework_Constraint;
   }
 }
