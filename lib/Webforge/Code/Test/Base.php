@@ -22,7 +22,7 @@ use Webforge\Translation\TranslationsBuilder;
  * - allow Webforge\Common\System\File for file-related
  * - add assertArrayEquals() as a short coming for equals() with $canonicalize = true
  */
-class Base extends Assertions {
+abstract class Base extends Assertions {
 
   /**
    * Attribute for HTMLTesting Interface

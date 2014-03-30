@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Psc\PHPUnit\InvokedAtMethodIndexMatcher;
 use Psc\PHPUnit\InvokedAtMethodGroupIndexMatcher;
 
-class Assertions extends \PHPUnit_Framework_TestCase {
+abstract class Assertions extends \PHPUnit_Framework_TestCase {
 
   /**
    * @var string
