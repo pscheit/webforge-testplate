@@ -14,6 +14,7 @@ use Webforge\Common\DeprecatedException;
 use Psc\System\Console\Process;
 use Webforge\Process\ProcessBuilder;
 use Webforge\Translation\TranslationsBuilder;
+use Webforge\Common\JS\JSONConverter;
 
 /**
  * Changes to the PHPUnit-API:
@@ -259,5 +260,14 @@ abstract class Base extends Assertions {
    */
   public function createGuzzleTester($baseUrl) {
     return new GuzzleTester($baseUrl);
+  }
+
+
+  /**
+   * @return mixed
+   */
+  public function parseJSON($string) {
+    $jsonc = new JSONConverter();
+    return $jsonc->parse($string);
   }
 }
