@@ -2,6 +2,8 @@
 
 namespace Webforge\Code\Test;
 
+use Webforge\Common\JS\JSONConverter;
+
 abstract class AbstractResponseAsserter {
 
   protected $response;
@@ -40,6 +42,35 @@ abstract class AbstractResponseAsserter {
     }
 
     return $this;
+  }
+
+  public function bodyContains($string) {
+    $body = $this->getBodyAsString();
+
+    if (mb_strpos($body, $string) === FALSE) {
+      throw $this->newAssertion(
+        sprintf("Response body does not contain '%s'", $string)
+      );
+    }
+  }
+
+  /**
+   * @return Webforce\Code\Test\ObjectAsserter
+   */
+  public function assertJsonBody(\PHPUnit_Framework_TestCase $testCase) {
+    $body = $this->getBodyAsString();
+    
+    $jsonc = new JSONConverter();
+    $json = $jsonc->parse($body);
+
+    return new ObjectAsserter($json, $testCase);
+  }
+
+  /**
+   * @return string
+   */
+  public function getBody() {
+    return $this->getBodyAsString();
   }
 
   public function format($formatOrContentType) {
