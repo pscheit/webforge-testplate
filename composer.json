@@ -15,7 +15,6 @@
     "require-dev": {
         "pscheit/psc-cms": "dev-master",
         "webforge/translation": "dev-master",
-        "webforge/webforge": "dev-master",
         "webforge/dom": "*",
         "liip/rmt": "0.9.*"
     },
