@@ -20,7 +20,15 @@ class ObjectAsserter {
       $this->context = $this;
       $this->path = array('$root');
       
-      $this->test->assertInternalType('object', $this->object, $this->msg('The given root object should be an object'));
+      $this->test->assertThat(
+        $this->object,
+        $test->logicalOr(
+          $test->isType('object'),
+          $test->isType('array')
+        ),
+        $this->msg('The given root object should be an object or an array')
+     );
+
     } else {
       $this->path = $path;
       $this->context = $context;
@@ -57,6 +65,12 @@ class ObjectAsserter {
     }
 
     $this->test->assertThat($this->object, $constraint, $this->msg('%s does not match', $this->path()));
+    return $this;
+  }
+
+  public function contains($string) {
+    $this->test->assertContains($string, $this->object, $this->msg('%s does not match contains:', $this->path()));
+
     return $this;
   }
 

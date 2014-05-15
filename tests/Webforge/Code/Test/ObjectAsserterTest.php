@@ -39,14 +39,18 @@ class ObjectAsserterTest extends Base {
     );
   }
 
-  public function testNonObjectsFail() {
+  public function testNonArrayAndObjectsFail() {
     $this->expectAssertionFail();
 
-    $this->assertThatObject(array());
+    $this->assertThatObject('string');
   }
 
   public function testEmptyObjectsPass() {
     $this->assertThatObject(new stdClass);
+  }
+
+  public function testEmptyArrayPass() {
+    $this->assertThatObject(array());
   }
 
   public function testAssertsPropertyToBeExisting() {
@@ -189,6 +193,17 @@ class ObjectAsserterTest extends Base {
       ->property('project')->property('author')->property('firstName', 'WrongFirstName');
   }
 
+  public function testPropertyContains_fail() {
+    $this->expectAssertionFail('does not match contains');
+    $this->assertThatObject($this->o)
+      ->property('project')->property('author')->property('firstName')->contains('wrong')->end();
+  }
+
+  public function testPropertyContains() {
+    $this->assertThatObject($this->o)
+      ->property('project')->property('author')->property('firstName')->contains('lipp')->end();
+  }
+
   public function testLengthOfArrayCanBeExpressedWithNumberToEqual() {
     $this->assertThatObject($this->o)
       ->property('project')
@@ -213,6 +228,7 @@ class ObjectAsserterTest extends Base {
   }
 
   public function testGettingOfNestedProperty() {
+    
     $this->assertEquals(
       (object) array(
         "url"=> "http://github.com/pschei/repository.git",
