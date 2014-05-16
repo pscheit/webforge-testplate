@@ -49,7 +49,7 @@ abstract class AbstractResponseAsserter {
 
     if (mb_strpos($body, $string) === FALSE) {
       throw $this->newAssertion(
-        sprintf("Response body does not contain '%s'", $string)
+        sprintf("'%s' (Response body) does not contain '%s'", $this->shortenString($body), $string)
       );
     }
   }
@@ -83,6 +83,14 @@ abstract class AbstractResponseAsserter {
     }
 
     return $this;
+  }
+
+  protected function shortenString($string) {
+    if (strlen($string) > 200) {
+      return mb_substr($string, 0, 200).' [...]';
+    } else {
+      return $string;
+    }
   }
 
   protected function newAssertion($msg) {
