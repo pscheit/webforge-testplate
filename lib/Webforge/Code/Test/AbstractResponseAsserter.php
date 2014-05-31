@@ -73,6 +73,11 @@ abstract class AbstractResponseAsserter {
     return $this->getBodyAsString();
   }
 
+  public function debug() {
+    print $this->getBody();
+    return $this;
+  }
+
   public function format($formatOrContentType) {
     $contentType = array_key_exists($formatOrContentType, $this->formats)? $this->formats[$formatOrContentType] : $formatOrContentType;
 
