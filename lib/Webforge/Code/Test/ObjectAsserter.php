@@ -68,6 +68,20 @@ class ObjectAsserter {
     return $this;
   }
 
+  public function isNot($constraint) {
+    if (!$this->isConstraint($constraint)) {
+      $constraint = $this->test->equalTo($constraint);
+    }
+
+    return $this->is($this->test->logicalNot($constraint));
+  }
+
+  public function isNotEmpty() {
+    $this->test->assertNotEmpty($this->object, $this->msg('%s is not empty', $this->path()));
+
+    return $this;
+  }
+
   public function contains($string) {
     $this->test->assertContains($string, $this->object, $this->msg('%s does not match contains:', $this->path()));
 
