@@ -74,7 +74,13 @@ abstract class AbstractResponseAsserter {
   }
 
   public function debug() {
-    print $this->getBody();
+    printf(
+      "ResponseAsserter-Response: [%d] %s with body:\n%s\n",
+      $this->getCode(),
+      $this->getContentType(),
+      $this->getBodyAsString()
+    );
+
     return $this;
   }
 
