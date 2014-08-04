@@ -17,7 +17,8 @@ class CSSTesterTest extends Base implements HTMLTesting {
     <li>RoadRunner</li>
     <li>Coyote</li>
     <li>Tweety</li>
-    <li>Silverster</li>
+    <li>Silvester
+    </li>
   </ul>
 </section>
 </body>
@@ -58,6 +59,45 @@ HTML;
     $this->css('section ul li:eq(0)')->asContext();
 
     $this->assertEquals('<li>RoadRunner</li>', $this->html);
+  }
+
+  public function testContainsText() {
+    $this->html = $this->thtml;
+
+    $this->css('ul li:eq(0)')->exists()->containsText('Road');
+  }
+
+  public function testContainsTextFailure() {
+    $this->html = $this->thtml;
+
+    $this->expectAssertionFail();
+    $this->css('ul li:eq(0)')->exists()->containsText('Rod');
+  }
+
+  public function testHasText() {
+    $this->html = $this->thtml;
+
+    $this->css('ul li:eq(0)')->exists()->hasText('RoadRunner');
+  }
+
+  public function testHasText_FailExactMatch() {
+    $this->html = $this->thtml;
+
+    $this->expectAssertionFail();
+    $this->css('ul li:eq(0)')->exists()->hasText('RoadRunne');
+  }
+
+  public function testHasText_FailExactMatchWithWhitespace() {
+    $this->html = $this->thtml;
+
+    $this->expectAssertionFail();
+    $this->css('ul li:eq(3)')->exists()->hasText('Silvester');
+  }
+
+  public function testTrimmedText() {
+    $this->html = $this->thtml;
+
+    $this->css('ul li:eq(3)')->exists()->hasTrimmedText('Silvester');
   }
 
   public function testexamples() {

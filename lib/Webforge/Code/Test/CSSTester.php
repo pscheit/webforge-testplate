@@ -130,6 +130,20 @@ class CSSTester {
     return $this;
   }
 
+  public function hasTrimmedText($expectedText, $msg = NULL) {
+    $this->testCase->assertEquals(
+      $expectedText, 
+      trim($this->getQuery()->text()),
+      sprintf("%sThe trimmed text contents of element (%s) do not match.",
+        $msg ? $msg.".\n" : '',
+        $this->getSelector()
+      )
+    );
+
+    return $this;
+  }
+
+
   public function text($constraint, $msg = NULL) {
     $query = $this->assertQuery(__FUNCTION__);
     
