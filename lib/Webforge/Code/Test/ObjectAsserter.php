@@ -2,6 +2,8 @@
 
 namespace Webforge\Code\Test;
 
+use Closure;
+
 class ObjectAsserter {
 
   protected $test;
@@ -142,6 +144,18 @@ class ObjectAsserter {
 
   public function debug() {
     var_dump($this->object);
+    return $this;
+  }
+
+  /**
+   * Taps into the current chain without changing the context
+   * 
+   * $do = function($data, $objectAsserter)
+   * 
+   * do is called with first parameter the actual data of context and with second argument an objectAsserter in the current context 
+   */
+  public function tap(Closure $do) {
+    $do($this->get(), $this);
     return $this;
   }
 

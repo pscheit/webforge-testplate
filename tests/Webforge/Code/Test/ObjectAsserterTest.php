@@ -241,6 +241,43 @@ class ObjectAsserterTest extends Base {
     );
   }
 
+  public function testTappingIntoObjects() {
+    $test = $this;
+    $tested = FALSE;
+    
+    $this->assertThatObject($this->o)
+      ->property('project')
+        ->property('repositories')
+          ->tap(function($data, $repositories) use ($test, &$tested) {
+            $tested = TRUE;
+            $test->assertEquals(
+              $data,
+              Array(
+                (object) array(
+                  "url"=> "http://github.com/pschei/repository.git",
+                  "type"=> "vcs"
+                ),
+                (object) array(
+                  "url"=> "http://github.com/pscheit/repository2.git",
+                  "type"=> "git"
+                )
+              ),
+              'tap should provide the raw data as first argument'
+            );
+
+            $repositories->key(0)->property('type', 'vcs');
+          });
+
+    $this->assertTrue($tested, 'tap closure should have been run');
+  }
+
+  public function testtapIsChainable() {
+    $project = $this->assertThatObject($this->o)
+      ->property('project');
+
+    $this->assertSame($project, $project->tap(function() {}));
+  }
+
   public function testDocuExample() {
     $this->assertThatObject($this->o)
       ->property('project')->isObject()
