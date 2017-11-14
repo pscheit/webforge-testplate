@@ -99,21 +99,77 @@ abstract class Base extends Assertions {
   public static function assertDirectoryExists($dir, $message = '') {
     return self::assertTrue(is_dir((string) $dir), 'failed asserting that '.$dir.' is a directory. '.$message);
   }
-  
-  public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE) {
+
+  public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE, $proxyTarget = null) {
     if (!class_exists($originalClassName)) {
       $originalClassName = ClassUtil::expandNamespace($originalClassName, ClassUtil::getNamespace(get_class($this)));
     }
-    
-    return parent::getMock($originalClassName, $methods, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods);
+
+    $builder = $this->getMockBuilder($originalClassName);
+
+    if (!empty($methods)) {
+        $builder->setMethods($methods);
+    }
+
+    if (!empty($mockClassName)) {
+        throw new \RuntimeException('this is not implemented, yet');
+    }
+
+    if ($proxyTarget !== null) {
+        throw new \RuntimeException('this is not implemented, yet');
+    }
+
+    if (!$callOriginalConstructor) {
+        $builder->disableOriginalConstructor();
+    }
+
+    if (!empty($arguments) && $callOriginalConstructor) {
+        $builder->setConstructorArgs($arguments);
+    }
+
+    if (!$callOriginalClone) {
+        $builder->disableOriginalClone();
+    }
+
+    if (!$cloneArguments) {
+        $builder->disableArgumentCloning();
+    }
+
+    return $builder->getMock();
   }
 
   public function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array(), $cloneArguments = TRUE) {
     if (!class_exists($originalClassName)) {
       $originalClassName = ClassUtil::expandNamespace($originalClassName, ClassUtil::getNamespace(get_class($this)));
     }
-    
-    return parent::getMockForAbstractClass($originalClassName, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
+
+    $builder = $this->getMockBuilder($originalClassName);
+
+    if (!empty($methods)) {
+      $builder->setMethods($methods);
+    }
+
+    if (!empty($mockClassName)) {
+      throw new \RuntimeException('this is not implemented, yet');
+    }
+
+    if (!$callOriginalConstructor) {
+      $builder->disableOriginalConstructor();
+    }
+
+    if (!empty($arguments) && $callOriginalConstructor) {
+      $builder->setConstructorArgs($arguments);
+    }
+
+    if (!$callOriginalClone) {
+      $builder->disableOriginalClone();
+    }
+
+    if (!$cloneArguments) {
+      $builder->disableArgumentCloning();
+    }
+
+    return $builder->getMockForAbstractClass();
   }
   
   /**
