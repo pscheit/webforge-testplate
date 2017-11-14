@@ -10,10 +10,11 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "webforge/common": "*"
+        "webforge/common": "~1.9.0"
     },
     "require-dev": {
-        "pscheit/psc-cms": "dev-master",
+        "guzzle/guzzle": "^3.9@dev",
+        "webforge/webforge": "dev-master",
         "webforge/translation": "dev-master",
         "webforge/dom": "*",
         "liip/rmt": "0.9.*"

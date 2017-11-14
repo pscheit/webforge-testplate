@@ -4,7 +4,7 @@ namespace Webforge\Code\Test;
 
 use Webforge\Common\System\Dir;
 use Webforge\Common\System\File;
-use Webforge\Common\String as S;
+use Webforge\Common\StringUtil as S;
 use Webforge\Common\Preg;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Plugin\History\HistoryPlugin;
