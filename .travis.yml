@@ -7,11 +7,9 @@ branches:
     - master
 
 before_install:
-  - composer self-update
-  - COMPOSER_ROOT_VERSION=dev-master composer install --dev --prefer-source --no-interaction
+  - composer install --prefer-dist --no-interaction
 
 script: phpunit  -c phpunit.travis.xml
 
 notifications:
   mail: p.scheit@ps-webforge.com
-  hipchat: 1fbdbbbaa517c485f935a6d72f1110@239240

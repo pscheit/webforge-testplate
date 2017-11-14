@@ -8,6 +8,7 @@ class GuzzleMockerTest extends Base {
     $this->chainClass = 'Webforge\\Code\\Test\\GuzzleMocker';
     parent::setUp();
 
+    $this->markTestSkipped('no guzzle mock plugin found');
     $this->guzzleMocker = new GuzzleMocker($this->getTestDirectory('guzzle-responses/'));
   }
 
